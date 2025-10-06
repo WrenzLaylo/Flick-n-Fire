@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Flick n' Fire 🔫</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"></script>
+
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <!-- ---- ADD: Splash Screen ---- -->
+    <div id="splash" role="dialog" aria-label="Splash Screen">
+      <div id="splashInner">
+        <div id="gameLogo" class="neon">
+          <span class="logoTop logoFlick">Flick</span>
+          <span class="logoTop">&nbsp;n’&nbsp;</span>
+          <span class="logoTop logoFire">Fire</span>
+          <span class="fireEmo">🔥</span>
+        </div>
+        <div id="tagline">
+          Finger-style anime shooter • Track • Flick • Fire • Earn
+        </div>
+        <button id="startBtn" class="btnPrimary">Tap to Start</button>
+        <div class="miniRow">
+          <button id="howBtn" class="btnGhost">How to Play</button>
+          <button id="creditBtn" class="btnGhost">Credits</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ---- ADD: Developed By Overlay ---- -->
+    <div id="developedBy">
+      <div id="devCard">
+        <h2 class="neon">Developed By</h2>
+        <p>
+          <span class="accent">Butial</span> &amp;
+          <span class="accent">Laylo</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- ---- EXISTING WORLD (unchanged markup) ---- -->
+    <div class="world gate" id="worldRoot">
+      <div id="titleRibbon" class="neon">Flick n’ Fire</div>
+
+      <!-- NEW: background canvas layer -->
+      <canvas
+        id="bgCanvas"
+        width="1280"
+        height="720"
+        aria-hidden="true"
+      ></canvas>
+
+      <video class="input_video" autoplay></video>
+      <canvas class="output_canvas" width="1280" height="720"></canvas>
+
+      <!-- NEW: camera border overlay -->
+      <div id="camFrame" aria-hidden="true"></div>
+
+      <div class="vignette"></div>
+
+      <div id="scoreboard">
+        <div id="score">Score: 0</div>
+        <div id="best">Best: 0</div>
+        <div class="hearts" id="hearts">❤️❤️❤️</div>
+        <div id="money">₱0</div>
+      </div>
+
+      <button id="toggleUpgrades">Upgrades</button>
+
+      <div id="upgrades">
+        <h3>Upgrades</h3>
+        <div class="upgrade">
+          <div style="flex: 1">
+            <div>
+              Bullet Speed<br /><span class="muted"
+                >Current level: <span id="bs-level">0</span> / 3</span
+              >
+            </div>
+          </div>
+          <div>
+            <button id="buy-bullet-speed">Buy ₱20</button>
+          </div>
+        </div>
+
+        <div class="upgrade">
+          <div style="flex: 1">
+            <div>
+              Burst Fire<br /><span class="muted"
+                >Current level: <span id="bf-level">0</span> / 10</span
+              >
+            </div>
+          </div>
+          <div>
+            <button id="buy-burst-fire">Buy ₱50</button>
+          </div>
+        </div>
+
+        <div class="upgrade">
+          <div style="flex: 1">
+            <div>
+              Bouncing Bullets<br /><span class="muted">One-time purchase</span>
+            </div>
+          </div>
+          <div>
+            <button id="buy-bouncing-bullets">Buy ₱100</button>
+          </div>
+        </div>
+
+        <div class="upgrade muted">Tip: Each sphere gives ₱10 when hit.</div>
+      </div>
+
+      <div id="gameOver">
+        💀 GAME OVER 💀<br /><small>Click to restart</small><br />
+        <button id="restartGame">Restart</button>
+      </div>
+
+      <!-- ADD: top-right controls -->
+      <div id="topControls">
+        <button id="muteBtn" class="chip">🔊 Music</button>
+        <button id="helpBtn" class="chip">❓ Help</button>
+      </div>
+
+      <!-- NEW: loot toast -->
+      <div id="toast"></div>
+    </div>
+
+    <script type="module" src="script.js"></script>
+  </body>
+</html>

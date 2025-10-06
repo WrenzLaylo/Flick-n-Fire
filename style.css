@@ -1,0 +1,431 @@
+/* ---- EXISTING ---- */
+body {
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: #000;
+  overflow: hidden;
+  font-family: Arial, sans-serif;
+  color: white;
+}
+
+.world {
+  position: relative;
+  width: 1280px;
+  height: 720px;
+}
+
+video {
+  position: absolute;
+  border-radius: 10px;
+  display: none;
+}
+
+canvas {
+  position: absolute;
+  border-radius: 10px;
+}
+
+#scoreboard {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  color: white;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 8px 12px;
+  border-radius: 8px;
+  z-index: 10;
+}
+
+.hearts {
+  font-size: 24px;
+}
+
+#upgrades {
+  position: absolute;
+  right: -320px;
+  top: 12px;
+  width: 300px;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  transition: right 0.4s ease;
+  z-index: 10;
+}
+
+#upgrades h3 {
+  margin: 6px 0 12px 0;
+  font-size: 18px;
+}
+.upgrade {
+  margin-bottom: 10px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.upgrade button {
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  min-width: 90px;
+}
+
+.upgrade button:disabled {
+  background: #666 !important;
+  color: #ddd !important;
+  cursor: not-allowed !important;
+  opacity: 0.65;
+  box-shadow: none !important;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  filter: grayscale(0.6);
+}
+
+#toggleUpgrades {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  z-index: 11;
+}
+
+#gameOver {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.85);
+  color: white;
+  font-size: 40px;
+  padding: 30px 60px;
+  border-radius: 20px;
+  text-align: center;
+  display: none;
+  z-index: 20;
+}
+
+#gameOver button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 20px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  background: #4caf50;
+  color: white;
+}
+
+.muted {
+  color: #ccc;
+  font-size: 12px;
+}
+
+/* ---- ADDITIONS: Anime/Dark UI polish ---- */
+@keyframes floaty {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+.neon {
+  text-shadow: 0 0 10px rgba(255, 70, 200, 0.8),
+    0 0 22px rgba(80, 150, 255, 0.6);
+  letter-spacing: 0.5px;
+}
+.world {
+  border-radius: 18px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6), inset 0 0 140px rgba(0, 0, 0, 0.3);
+  background: radial-gradient(
+      1200px 600px at 80% -10%,
+      rgba(255, 64, 128, 0.08),
+      transparent 60%
+    ),
+    radial-gradient(
+      1000px 500px at 0% 110%,
+      rgba(64, 160, 255, 0.08),
+      transparent 60%
+    ),
+    #07080d;
+  overflow: hidden;
+}
+.vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    70% 60% at 50% 40%,
+    transparent 50%,
+    rgba(0, 0, 0, 0.55) 100%
+  );
+  z-index: 2;
+}
+#titleRibbon {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 12;
+  padding: 6px 14px;
+  border-radius: 12px;
+  font-weight: 900;
+  font-size: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.08),
+    rgba(255, 255, 255, 0.02)
+  );
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35),
+    inset 0 0 40px rgba(255, 255, 255, 0.06);
+}
+#toggleUpgrades,
+.upgrade button,
+#restartGame {
+  background: linear-gradient(180deg, #5b8cff, #3d58ff);
+  color: #fff;
+  box-shadow: 0 6px 22px rgba(61, 88, 255, 0.35),
+    0 0 0 1px rgba(255, 255, 255, 0.08) inset;
+}
+#scoreboard {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.4),
+    inset 0 0 30px rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(6px);
+}
+#upgrades {
+  backdrop-filter: blur(6px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45),
+    inset 0 0 40px rgba(255, 255, 255, 0.05);
+}
+#money::before {
+  content: "🪙 ";
+}
+
+/* ---- Splash Screen ---- */
+#splash {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(
+      1200px 600px at 80% -10%,
+      rgba(255, 64, 128, 0.18),
+      transparent 60%
+    ),
+    radial-gradient(
+      1000px 500px at 0% 110%,
+      rgba(64, 160, 255, 0.18),
+      transparent 60%
+    ),
+    #04050a;
+  display: grid;
+  place-items: center;
+  z-index: 999;
+}
+#splashInner {
+  text-align: center;
+  animation: floaty 3s ease-in-out infinite;
+}
+#gameLogo {
+  font-size: 64px;
+  font-weight: 1000;
+  margin-bottom: 10px;
+  line-height: 1.05;
+}
+.logoTop {
+  display: inline-block;
+  transform: skewX(-6deg);
+}
+.logoFlick {
+  color: #ffd166;
+}
+.logoFire {
+  color: #ff4d6d;
+}
+#tagline {
+  opacity: 0.9;
+  font-size: 16px;
+  margin-bottom: 26px;
+}
+.btnPrimary {
+  background: linear-gradient(180deg, #ff7a7a, #ff2e63);
+  border: none;
+  color: #fff;
+  font-weight: 900;
+  padding: 12px 22px;
+  border-radius: 14px;
+  cursor: pointer;
+  font-size: 18px;
+  box-shadow: 0 10px 26px rgba(255, 46, 99, 0.45),
+    0 0 0 1px rgba(255, 255, 255, 0.12) inset;
+}
+.miniRow {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 12px;
+}
+.btnGhost {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 700;
+}
+.fireEmo {
+  filter: drop-shadow(0 0 12px rgba(255, 90, 90, 0.85));
+}
+
+/* ---- Developed By Overlay ---- */
+#developedBy {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(0, 0, 0, 0.85);
+  color: #fff;
+  z-index: 998;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.6s ease;
+}
+#developedBy.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+#devCard {
+  padding: 26px 34px;
+  border-radius: 16px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.08),
+    rgba(255, 255, 255, 0.03)
+  );
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6),
+    inset 0 0 60px rgba(255, 255, 255, 0.06);
+  text-align: center;
+}
+#devCard h2 {
+  margin: 0 0 8px 0;
+  font-size: 28px;
+}
+#devCard p {
+  margin: 0;
+  opacity: 0.9;
+}
+.accent {
+  color: #84f;
+}
+
+/* ---- Top-right controls ---- */
+#topControls {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  z-index: 12;
+  display: flex;
+  gap: 8px;
+}
+.chip {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.chip:active {
+  transform: translateY(1px);
+}
+
+/* Hide game interactions until start */
+.gate {
+  pointer-events: none;
+  opacity: 0.35;
+  filter: blur(2px);
+  transition: opacity 0.5s ease, filter 0.5s ease;
+}
+.gate.play {
+  pointer-events: auto;
+  opacity: 1;
+  filter: none;
+}
+
+/* === NEW: animated background canvas layer (pixel clouds + hills) === */
+#bgCanvas {
+  position: absolute;
+  inset: 0;
+  z-index: 0; /* under game canvas */
+  border-radius: 10px;
+}
+.output_canvas {
+  z-index: 1;
+}
+.input_video {
+  z-index: 1;
+}
+
+/* === NEW: Camera game-style frame overlay === */
+#camFrame {
+  position: absolute;
+  inset: 0;
+  z-index: 1; /* sits over the video but under HUD */
+  pointer-events: none;
+  border-radius: 10px;
+}
+/* pixel-y border with corners */
+#camFrame:before,
+#camFrame:after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 10px;
+}
+/* outer glowing bezel */
+#camFrame:before {
+  box-shadow: inset 0 0 0 4px rgba(255, 255, 255, 0.06),
+    inset 0 0 0 8px rgba(0, 0, 0, 0.35),
+    inset 0 0 40px rgba(123, 173, 255, 0.18);
+}
+/* chunky corner brackets */
+#camFrame:after {
+  background: linear-gradient(#7bd, #7bd) left top/60px 6px no-repeat,
+    linear-gradient(#7bd, #7bd) left top/6px 60px no-repeat,
+    linear-gradient(#7bd, #7bd) right top/60px 6px no-repeat,
+    linear-gradient(#7bd, #7bd) right top/6px 60px no-repeat,
+    linear-gradient(#7bd, #7bd) left bottom/60px 6px no-repeat,
+    linear-gradient(#7bd, #7bd) left bottom/6px 60px no-repeat,
+    linear-gradient(#7bd, #7bd) right bottom/60px 6px no-repeat,
+    linear-gradient(#7bd, #7bd) right bottom/6px 60px no-repeat;
+  opacity: 0.9;
+  mix-blend-mode: screen;
+}
+
+/* === NEW: floating toast text for loot reveal === */
+#toast {
+  position: absolute;
+  left: 50%;
+  top: 14%;
+  transform: translateX(-50%);
+  z-index: 15;
+  padding: 8px 14px;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  font-weight: 900;
+  display: none;
+}
